@@ -17,7 +17,7 @@ const thoughtController = {
       });
   },
 
-  // get a single though by id
+  // get a single thought by id
 
   getThoughtById(req, res) {
     Thought.findOne({ _id: req.params.id })
@@ -28,7 +28,7 @@ const thoughtController = {
       .select('-__v')
       .then(dbData => {
         if (!dbData) {
-          res.status(404).json({ message: 'Oh snap! No user with that id bro!' });
+          res.status(404).json({ message: 'Oh snap! No thought with that id bro!' });
           return;
         }
         res.json(dbData);
@@ -76,27 +76,6 @@ const thoughtController = {
       .catch(err => res.status(400).json(err));
   },
 
-  deleteThought(req, res) {
-    Thought.findOneAndDelete({ _id: req.params.id })
-      .then(deletedThought => {
-        if (!deletedThought) {
-          return res.status(404).json({ message: 'Oh snap! No user with that id bro!' });
-        }
-        return User.findOneAndUpdate(
-          { username: params.username },
-          { $pull: { thoughts: req.params.id } },
-          { new: true }
-        ).then(dbUserData => {
-          if (!dbUserData) {
-            res.status(404).json({ message: 'Oh snap! No user with that id bro!' });
-            return;
-          }
-          res.json(dbUserData);
-        });
-      })
-      .catch(err => res.status(400).json(err));
-  },
-
   // remove thought by id
   deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.id })
@@ -129,9 +108,9 @@ const thoughtController = {
       .then(dbData => {
         console.log('dbData -> ', dbData);
         if (!dbData) {
-          res
-            .status(404)
-            .json({ message: "Don't even trip dawg. But there's like, thought with that id bro" });
+          res.status(404).json({
+            message: "Don't even trip dawg. But there's like, no thought with that id bro",
+          });
           return;
         }
         res.json(dbData);

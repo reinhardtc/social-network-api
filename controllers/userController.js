@@ -29,7 +29,7 @@ const userController = {
       .catch(err => res.status(400).json(err));
   },
 
-  // get a single user by _id with all thoughts and friends
+  // get a single user by id. Including all users and friends
   getUserById(req, res) {
     User.findOne({ _id: req.params.id })
       .populate({
@@ -61,7 +61,7 @@ const userController = {
       .catch(err => res.status(400).json(err));
   },
 
-  // put to update a user by _id
+  //update user by id
   updateUser(req, res) {
     User.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
@@ -69,7 +69,7 @@ const userController = {
     })
       .then(dbData => {
         if (!dbData) {
-          res.status(404).json({ message: 'Try Again! Nobody with that id!' });
+          res.status(404).json({ message: 'Nope! No user with that id!' });
           return;
         }
         res.json(dbData);
@@ -92,6 +92,18 @@ const userController = {
         res.json(dbData);
       })
       .catch(err => res.json(err));
+  },
+
+  deleteUser(req, res) {
+    User.findOneAndDelete({ _id: req.params.id })
+      .then(deletedUser => {
+        if (!deletedUser) {
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
+        }
+        res.json(dbData);
+      })
+      .catch(err => res.status(400).json(err));
   },
 
   // delete to remove a friend from a user's friend list
